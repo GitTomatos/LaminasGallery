@@ -1,0 +1,35 @@
+<div class="addContainer">
+    <?php if ($this->wasEdited): ?>
+        <div class="alert alert-success text-center" role="alert">
+            <h1>Обновлено успешно</h1>
+        </div>
+    <?php else: ?>
+
+    <?php endif ?>
+    <h1 class="text-center reg-album-header">Редактировать альбом</h1>
+    <?php
+    $this->form->prepare();
+    echo $this->form()->openTag($this->form);
+    ?>
+    <div class="mb-3">
+        <?= $this->formRow($this->form->get('album')->get('name')); ?>
+    </div>
+    <div class="mb-3">
+        <?= $this->formRow($this->form->get('album')->get('description')); ?>
+    </div>
+    <div class="mb-3">
+        <?= $this->formRow($this->form->get('album')->get('photographer')); ?>
+    </div>
+    <div class="mb-3">
+        <?= $this->formRow($this->form->get('album')->get('email')); ?>
+    </div>
+    <div class="mb-3">
+        <?= $this->formRow($this->form->get('album')->get('phone')); ?>
+    </div>
+
+    <div class='w-100 d-flex justify-content-center mt-8'>
+        <?= $this->formSubmit($this->form->get('album')->get('submit')); ?>
+    </div>
+
+    <?= $this->form()->closeTag($this->form); ?>
+</div>

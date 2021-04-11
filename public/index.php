@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+ini_set("display_errors", 'true');
+error_reporting(E_ALL);
+
 use Laminas\Mvc\Application;
 use Laminas\Stdlib\ArrayUtils;
 
@@ -37,6 +40,8 @@ $appConfig = require __DIR__ . '/../config/application.config.php';
 if (file_exists(__DIR__ . '/../config/development.config.php')) {
     $appConfig = ArrayUtils::merge($appConfig, require __DIR__ . '/../config/development.config.php');
 }
+//dd($appConfig);
 
 // Run the application!
+//dd($appConfig);
 Application::init($appConfig)->run();

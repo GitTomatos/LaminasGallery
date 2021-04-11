@@ -10,13 +10,22 @@ declare(strict_types=1);
 
 namespace Application\Controller;
 
+use Application\Repository\AlbumRepository;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
+    private AlbumRepository $albumRepository;
+
+    public function __construct(AlbumRepository $albumRepository)
+    {
+        $this->albumRepository = $albumRepository;
+    }
+
     public function indexAction()
     {
-        return new ViewModel();
+        $albums = $this->albumRepository->findAll();
+        return new ViewModel(['albums' => $albums]);
     }
 }

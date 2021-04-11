@@ -1,0 +1,48 @@
+<?php
+
+if ($this->flashMessenger()->hasCurrentSuccessMessages()): ?>
+    <div class="alert alert-success text-center" role="alert">
+<!--    <p>--><?php //dump($this->flashMessenger()->getCurrentSuccessMessages()) ?><!--</p>-->
+<!--        --><?php //$this->flashMessenger()->clearCurrentMessages() ?>
+        <?php echo $this->flashMessenger()
+                ->setMessageOpenFormat('<div%s><h1>')
+                ->setMessageSeparatorString('')
+                ->setMessageCloseString('</h1></div>')
+                ->render('success'); ?>
+    </div>
+
+
+<?php //else: ?>
+<!--    <div class="alert alert-danger text-center" role="alert">-->
+<!--        <h1>--><?php //echo $this->flashMessenger()->render('error'); ?><!--</h1>-->
+<!--    </div>-->
+<?php endif ?>
+
+<div class="addContainer">
+    <h1 class="text-center reg-album-header">Добавить альбом</h1>
+    <?php
+    $this->form->prepare();
+    echo $this->form()->openTag($this->form);
+    ?>
+    <div class="mb-3">
+        <?= $this->formRow($this->form->get('album')->get('name')); ?>
+    </div>
+    <div class="mb-3">
+        <?= $this->formRow($this->form->get('album')->get('description')); ?>
+    </div>
+    <div class="mb-3">
+        <?= $this->formRow($this->form->get('album')->get('photographer')); ?>
+    </div>
+    <div class="mb-3">
+        <?= $this->formRow($this->form->get('album')->get('email')); ?>
+    </div>
+    <div class="mb-3">
+        <?= $this->formRow($this->form->get('album')->get('phone')); ?>
+    </div>
+
+    <div class='w-100 d-flex justify-content-center mt-8'>
+        <?= $this->formSubmit($this->form->get('album')->get('submit')); ?>
+    </div>
+
+    <?= $this->form()->closeTag($this->form); ?>
+</div>

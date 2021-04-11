@@ -1,0 +1,35 @@
+<?php
+$form = $this->form;
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary']);
+$form->prepare();
+?>
+
+<h1>Upload a New Image</h1>
+
+<p>
+    Пожалуйста, заполните следующую форму и нажмите кнопку <i>Upload</i>.
+</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <?= $this->form()->openTag($form); ?>
+
+        <div class="form-group">
+            <?= $this->formRow($form->get('file')); ?>
+            <?= $this->formRow($form->get('imageName')); ?>
+
+            <?php
+            if ($form->has('albumId')) {
+                echo $this->formRow($form->get('albumId'));
+            }
+            ?>
+
+            <?= $this->formElementErrors($form->get('file')); ?>
+            <div class="hint">(PNG and JPG formats are allowed)</div>
+        </div>
+
+        <?= $this->formElement($form->get('submit')); ?>
+
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>
