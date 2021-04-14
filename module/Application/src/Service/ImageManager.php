@@ -11,8 +11,8 @@ class ImageManager
 
     public function setAlbumDir(int $id): string
     {
-        $this->dirToSaveFull = './data/upload/' . $id . "/";
-        $this->dirToSaveMin = './data/upload/' . $id . "/min/";
+        $this->dirToSaveFull = './public/uploads/' . $id . "/";
+        $this->dirToSaveMin = './public/uploads/' . $id . "/min/";
         return $this->dirToSaveFull;
     }
 
@@ -48,9 +48,9 @@ class ImageManager
 
     public function getSavedMins()
     {
-        if (!isset($this->dirToSaveMin)) {
-            $this->callDirException();
-        }
+//        if (!isset($this->dirToSaveMin)) {
+//            $this->callDirException();
+//        }
 
         if (!is_dir($this->dirToSaveMin)) {
             return [];
@@ -102,12 +102,6 @@ class ImageManager
         $fileSize = filesize($filePath);
         $mimeType = mime_content_type($filePath);
 
-//        $finfo = finfo_open(FILEINFO_MIME);
-//        $mimeType = finfo_file($finfo, $filePath);
-//        if ($mimeType === false)
-//            $mimeType = 'application/octet-stream';
-
-
         return [
             'size' => $fileSize,
             'type' => $mimeType
@@ -117,10 +111,11 @@ class ImageManager
 
     public function moveUploadedFile(array $formData): bool {
         $tempFilePath = $formData['file']['tmp_name'];
-        $imageName = $formData['imageName'];
+        $imageName = $formData['name'];
         $targetDir = $this->setAlbumDir($formData['albumId']);
+        $fileExtension = pathinfo($formData['file']['name'], PATHINFO_EXTENSION);
         $this->createDir();
-        $targetPath = $targetDir . $imageName . '.jpg';
+        $targetPath = $targetDir . $imageName . "." . $fileExtension;
 
         if (move_uploaded_file($tempFilePath, $targetPath) === false) {
             return false;
@@ -131,7 +126,7 @@ class ImageManager
     }
 
 
-    public function createResizedImage(string $filePath, int $desiredWidth = 240): void
+    public function createResizedImage(string $filePath, int $desiredWidth = 250): void
     {
         list($originalWidth, $originalHeight) = getimagesize($filePath);
 
@@ -153,5 +148,13 @@ class ImageManager
         $resizedFilePath .= "/" . basename($filePath);
 
         imagejpeg($resultingImage, $resizedFilePath, 80);
+    }
+
+    public function deleteImage(int $albumId, string $photoName) {
+        $this->setAlbumDir($albumId);
+        $fullPhotoPath = $this->dirToSaveFull . $photoName;
+        $minPhotoPath = $this->dirToSaveMin . $photoName;
+        unlink($fullPhotoPath);
+        unlink($minPhotoPath);
     }
 }

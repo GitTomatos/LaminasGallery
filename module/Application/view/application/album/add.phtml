@@ -4,11 +4,14 @@ if ($this->flashMessenger()->hasCurrentSuccessMessages()): ?>
     <div class="alert alert-success text-center" role="alert">
 <!--    <p>--><?php //dump($this->flashMessenger()->getCurrentSuccessMessages()) ?><!--</p>-->
 <!--        --><?php //$this->flashMessenger()->clearCurrentMessages() ?>
-        <?php echo $this->flashMessenger()
+        <?php
+        echo $this->flashMessenger()
                 ->setMessageOpenFormat('<div%s><h1>')
                 ->setMessageSeparatorString('')
                 ->setMessageCloseString('</h1></div>')
-                ->render('success'); ?>
+                ->render('success');
+        $this->flashMessenger()->clearMessages();
+        ?>
     </div>
 
 

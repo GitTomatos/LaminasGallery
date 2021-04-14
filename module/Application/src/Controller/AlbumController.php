@@ -67,7 +67,8 @@ class AlbumController extends AbstractActionController
         $album = $this->albumRepository->findOneBy(['id' => $albumId]);
 
         if (is_null($album)) {
-            $this->redirect()->toRoute('home');
+            $this->getResponse()->setStatusCode(404);
+            return;
         }
 
         $form = new EditAlbumForm();
@@ -81,6 +82,7 @@ class AlbumController extends AbstractActionController
                 $editedAlbum = $form->getData();
 
                 $this->albumRepository->save($editedAlbum);
+                $this->flashMessenger()->addSuccessMessage('Изменено');
                 return new ViewModel([
                     'form' => $form,
                 ]);
@@ -88,9 +90,21 @@ class AlbumController extends AbstractActionController
 
         }
 
+
         return new ViewModel([
             'form' => $form,
         ]);
+    }
+
+    public function deleteAction() {
+        $albumId = $this->params()->fromRoute('albumId');
+        if (is_null($this->albumRepository->find($albumId))) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $this->albumRepository->delete($albumId);
+        $this->redirect()->toRoute('home');
     }
 
 }

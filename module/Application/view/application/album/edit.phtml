@@ -1,11 +1,24 @@
 <div class="addContainer">
-    <?php if ($this->wasEdited): ?>
-        <div class="alert alert-success text-center" role="alert">
-            <h1>Обновлено успешно</h1>
-        </div>
-    <?php else: ?>
-
+    <?php if ($this->flashMessenger()->hasCurrentSuccessMessages()): ?>
+    <div class="alert alert-success text-center" role="alert">
+        <?php
+        echo $this->flashMessenger()
+            ->setMessageOpenFormat('<div%s><h1>')
+            ->setMessageSeparatorString('')
+            ->setMessageCloseString('</h1></div>')
+            ->render('success');
+        $this->flashMessenger()->clearMessages();
+        ?>
+    </div>
     <?php endif ?>
+
+<!--    --><?php //if ($this->wasEdited): ?>
+<!--        <div class="alert alert-success text-center" role="alert">-->
+<!--            <h1>Обновлено успешно</h1>-->
+<!--        </div>-->
+<!--    --><?php //else: ?>
+<!---->
+<!--    --><?php //endif ?>
     <h1 class="text-center reg-album-header">Редактировать альбом</h1>
     <?php
     $this->form->prepare();
@@ -32,4 +45,9 @@
     </div>
 
     <?= $this->form()->closeTag($this->form); ?>
+
+    <div class='w-100 d-flex justify-content-center mt-8'>
+        <a class='btn btn-primary' href="/">Вернуться на главную</a>
+    </div>
+
 </div>

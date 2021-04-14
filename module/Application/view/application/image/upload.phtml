@@ -16,16 +16,18 @@ $form->prepare();
 
         <div class="form-group">
             <?= $this->formRow($form->get('file')); ?>
-            <?= $this->formRow($form->get('imageName')); ?>
+            <div class="hint">(PNG или JPG)</div>
+
+            <?= $this->formRow($form->get('name')); ?>
+            <?= $this->formRow($form->get('address')); ?>
 
             <?php
-            if ($form->has('albumId')) {
+//            if ($form->has('albumId')) {
                 echo $this->formRow($form->get('albumId'));
-            }
+//            }
             ?>
 
             <?= $this->formElementErrors($form->get('file')); ?>
-            <div class="hint">(PNG and JPG formats are allowed)</div>
         </div>
 
         <?= $this->formElement($form->get('submit')); ?>

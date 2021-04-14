@@ -14,6 +14,18 @@ foreach ($this->albums as $album):
     ?>
 
     <div class="album-unit">
+<!--        <img src="-->
+<!--        --><?php //echo $this->url(
+//            'images',
+//            ['action' => 'file', 'albumId' => $album->getId()],
+//            ['query' => ['getLast' => true]])
+//        ?><!--"-->
+<!--             alt=""-->
+<!--        >-->
+
+        <img src="<?= $this->url(
+            'images',
+            ['action' => 'file', 'albumId' => $album->getId()], ['query' => ['thumbnail' => true]]) ?>" alt="">
         <p><a href="<?= $this->url('edit', ['albumId' => $album->getId()]); ?>">Название: <?= $album->getName() ?></a>
         </p>
         <p>Описание: <?= $album->getDescription() ?></p>
@@ -28,6 +40,14 @@ foreach ($this->albums as $album):
         <p>
             <a href="<?= $this->url('images', ['albumId' => $album->getId()]); ?>"
                class="btn btn-primary" role="button">Посмотреть фотографии</a>
+        </p>
+        <p>
+            <a href="<?= $this->url('edit', ['albumId' => $album->getId()]); ?>"
+               class="btn btn-primary" role="button">Редактировать альбом</a>
+        </p>
+        <p>
+            <a href="<?= $this->url('deleteAlbum', ['albumId' => $album->getId()]); ?>"
+               class="btn btn-primary" role="button">Удалить альбом</a>
         </p>
     </div>
 

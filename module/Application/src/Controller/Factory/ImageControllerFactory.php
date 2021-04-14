@@ -17,8 +17,9 @@ class ImageControllerFactory implements FactoryInterface
     {
         $imageManager = $container->get(ImageManager::class);
         $albumRepository = $container->get('AlbumRepositoryFactory');
+        $imageRepository = $container->get('ImageRepositoryFactory');
 
         // Инстанцируем контроллер и внедряем зависимости
-        return new ImageController($imageManager, $albumRepository);
+        return new ImageController($imageManager, $albumRepository, $imageRepository);
     }
 }

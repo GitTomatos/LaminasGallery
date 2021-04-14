@@ -18,7 +18,7 @@ class AlbumRepository extends AbstractRepository
 
     public function save(Entity $album)
     {
-        if (isNull($album->getId())) {
+        if (is_null($album->getId())) {
             $this->insert($album);
         } else {
             $this->update($album);

@@ -15,8 +15,6 @@ class ImageForm extends Form
     {
         parent::__construct('image-form');
 
-//        $this->albumId = $albumId;
-
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
         $this->addInputFilter();
@@ -38,9 +36,17 @@ class ImageForm extends Form
 
         $this->add([
             'type' => 'text',
-            'name' => 'imageName',
+            'name' => 'name',
             'options' => [
                 'label' => 'Название картинки',
+            ],
+        ]);
+
+        $this->add([
+            'type' => 'text',
+            'name' => 'address',
+            'options' => [
+                'label' => 'Адрес фотосъёмки:',
             ],
         ]);
 
@@ -66,6 +72,7 @@ class ImageForm extends Form
     {
         $inputFilter = new InputFilter();
         $this->setInputFilter($inputFilter);
+//        new \Laminas\InputFilter\FileInput();
 
         // Добавляем правила валидации для поля "file".
         $inputFilter->add([
@@ -81,24 +88,91 @@ class ImageForm extends Form
                     ]
                 ],
                 ['name' => 'FileIsImage'],
-                [
-                    'name' => 'FileSize',
-                    'options' => [
-                        'max' => '20MB'
-                    ]
-                ],
+//                [
+//                    'name' => 'Laminas\Validator\File\Count',
+//                    'options' => [
+//                        'max' => 1,
+//                    ],
+//                ],
+//                [
+//                    'name' => 'FileSize',
+//                    'options' => [
+//                        'max' => '20MB'
+//                    ]
+//                ],
             ],
-            'filters'  => [
-                [
-                    'name' => 'FileRenameUpload',
-                    'options' => [
-//                        'target'=>"./data/upload/" . $this->albumId . "/",
+//            'filters' => [
+//                [
+////                    new \Laminas\Filter\File\RenameUpload();
+//                    'name' => 'FileRenameUpload',
+//                    'options' => [
+//                        'target'=>"./data/uploads/",
 //                        'useUploadName'=>true,
 //                        'useUploadExtension'=>true,
-                        'overwrite'=>true,
-                        'randomize'=>false
-                    ]
-                ]
+//                        'overwrite' => true,
+//                        'randomize' => false
+//                    ]
+//                ]
+//            ],
+        ]);
+
+        $inputFilter->add([
+            'name' => 'name',
+            'required' => true,
+            'validators' => [
+                [
+                    'name' => 'Laminas\Validator\StringLength',
+                    'options' => [
+                        'min' => 1,
+                        'max' => 50,
+                        'messages' => [
+                            \Laminas\Validator\StringLength::TOO_SHORT => "Должен быть хотя бы один символ",
+                            \Laminas\Validator\StringLength::TOO_LONG => "Превышает допустимые %max% символов",
+                        ]
+                    ],
+
+                ],
+            ],
+            'filters' => [
+                [
+                    'name' => 'Laminas\Filter\StripNewlines',
+                ],
+                [
+                    'name' => 'Laminas\Filter\StringTrim',
+                ],
+                [
+                    'name' => 'Laminas\Filter\StripTags',
+                ],
+            ],
+        ]);
+
+        $inputFilter->add([
+            'name' => 'address',
+            'required' => false,
+            'validators' => [
+                [
+                    'name' => 'Laminas\Validator\StringLength',
+                    'options' => [
+                        'min' => 1,
+                        'max' => 200,
+                        'messages' => [
+                            \Laminas\Validator\StringLength::TOO_SHORT => "Должен быть хотя бы один символ",
+                            \Laminas\Validator\StringLength::TOO_LONG => "Превышает допустимые %max% символов",
+                        ]
+                    ],
+
+                ],
+            ],
+            'filters' => [
+                [
+                    'name' => 'Laminas\Filter\StripNewlines',
+                ],
+                [
+                    'name' => 'Laminas\Filter\StringTrim',
+                ],
+                [
+                    'name' => 'Laminas\Filter\StripTags',
+                ],
             ],
         ]);
 

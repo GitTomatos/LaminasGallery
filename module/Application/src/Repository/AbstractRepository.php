@@ -18,6 +18,19 @@ abstract class AbstractRepository implements RepositoryInterface
     }
 
 
+    public function delete(int $entityId): void {
+        $tableName = $this->getTableName();
+
+        $sql = "DELETE FROM $tableName WHERE id = :id";
+
+        $conn = $this->pdo;
+
+        $sth = $conn->prepare($sql);
+        $sth->bindValue(':id', $entityId);
+
+        $sth->execute();
+    }
+
     public function find(int $id): ?Entity
     {
         $tableName = $this->getTableName();
@@ -58,6 +71,7 @@ abstract class AbstractRepository implements RepositoryInterface
 
         return $albums;
     }
+
 
     public function findOneBy(array $data): ?Entity
     {

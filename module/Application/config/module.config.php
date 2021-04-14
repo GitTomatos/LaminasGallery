@@ -13,16 +13,14 @@ namespace Application;
 use Application\Controller\AlbumController;
 use Application\Controller\ImageController;
 use Application\Controller\IndexController;
+use Application\Repository\AbstractRepository;
 use Application\Repository\AlbumRepository;
+use Application\Repository\ImageRepository;
 use Laminas\Db\Adapter\Adapter;
-use Laminas\Db\Sql\Ddl\Index\Index;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
 use Laminas\ServiceManager\Factory\InvokableFactory;
-use Laminas\ServiceManager\ServiceManager;
 use PDO;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Doctrine\DBAL\Driver\PDOMySql\Driver as PDOMySqlDriver;
 
 return [
     'router' => [
@@ -50,12 +48,32 @@ return [
                     ],
                 ],
             ],
-//            'album' => [
-//                'type' => Segment::class,
-//                'options' => [
-//                    'route' => '[/:action]'
-//                ]
-//            ],
+            'deleteAlbum' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/delete/:albumId',
+                    'constraints' => [
+                        'albumId' => '\d+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\AlbumController::class,
+                        'action' => 'delete',
+                    ],
+                ],
+            ],
+            'deletePhoto' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/images/delete/:albumId',
+                    'constraints' => [
+                        'albumId' => '\d+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\ImageController::class,
+                        'action' => 'delete',
+                    ],
+                ],
+            ],
             'home' => [
                 'type' => Literal::class,
                 'options' => [
@@ -135,6 +153,9 @@ return [
         'factories' => [
             'AlbumRepositoryFactory' => function ($sm) {
                 return new AlbumRepository($sm->get('PDOFactory'));
+            },
+            'ImageRepositoryFactory' => function ($sm) {
+                return new ImageRepository($sm->get('PDOFactory'));
             },
             'AdapterFactory' => function ($sm) {
                 $config = $sm->get('Config');
